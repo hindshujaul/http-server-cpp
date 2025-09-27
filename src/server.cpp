@@ -59,7 +59,7 @@ int main(int argc, char **argv) {
 
    /*Extracting URL Path*/
    char buffer[1024];
-   int received=recvd(clientsocket,buffer,sizeof(buffer)-1,0);
+   int received=recv(clientsocket,buffer,sizeof(buffer)-1,0);
    string request;
 
    if(received>0)
