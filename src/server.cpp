@@ -7,7 +7,8 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netdb.h>
-#include<string>
+#include <string>
+using namespace std;
 
 int main(int argc, char **argv) {
   // Flush after every std::cout / std::cerr
