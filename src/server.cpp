@@ -73,7 +73,7 @@ int main(int argc, char **argv) {
    /* For Response 200 */	
    string response200="HTTP/1.1 200 OK\r\n\r\n";
    string response404="HTTP/1.1 404 Not Found\r\n\r\n";
-   istringstream iss(request);
+   istringstream iss (request);
    string method,path,version;
    iss>>method>>path>>version;
 
