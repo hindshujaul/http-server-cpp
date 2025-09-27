@@ -58,8 +58,8 @@ int main(int argc, char **argv) {
    std::cout << "Client connected\n";
  
    /* For Response 200 */	
-   //string response="HTTP/1.1 200 OK\r\n\r\n";
-   send(clientsocket,"HTTP/1.1 200 OK\r\n\r\n",20,0);
+   string response="HTTP/1.1 200 OK\r\n\r\n";
+   send(clientsocket,response.data(),response.size(),0);
  	 
    close(server_fd);
 
