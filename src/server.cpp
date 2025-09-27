@@ -56,11 +56,32 @@ int main(int argc, char **argv) {
    std::cout << "Waiting for a client to connect...\n";
   
    int clientsocket=accept(server_fd, (struct sockaddr *) &client_addr, (socklen_t *) &client_addr_len);
+
+   /*Extracting URL Path*/
+   char buffer[1024];
+   int received=recvd(clientsocket,buffer,sizeof(buffer)-1,0);
+   string request;
+
+   if(received>0)
+   {
+	buffer[received]='\0';
+	request=string(buffer);
+   }	
+     
    std::cout << "Client connected\n";
  
    /* For Response 200 */	
-   string response="HTTP/1.1 200 OK\r\n\r\n";
-   send(clientsocket,response.data(),response.size(),0);
+   string response200="HTTP/1.1 200 OK\r\n\r\n";
+   string response404="HTTP/1.1 404 Not Found\r\n\r\n";
+   istringstream iss(request);
+   string method,path,version;
+   iss>>method>>path>>version;
+
+   cout<<path<<endl;
+   if(path=="/")
+   	send(clientsocket,response200.data(),response200.size(),0);
+   else
+	send(clientsocket,response404.data(),response404.size(),0);
  	 
    close(server_fd);
 
