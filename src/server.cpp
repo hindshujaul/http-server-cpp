@@ -122,12 +122,14 @@ int main(int argc, char **argv) {
   
    std::cout << "Waiting for a client to connect...\n";
   
-   int clientsocket=accept(server_fd, (struct sockaddr *) &client_addr, (socklen_t *) &client_addr_len);
+   while(1)
+   {	
+	   int clientsocket=accept(server_fd, (struct sockaddr *) &client_addr, (socklen_t *) &client_addr_len);
 
-   
-   cout<<"Client Connected\n"<<endl;	
-   thread t(handle_client,clientsocket);
-   t.detach();
+
+	   cout<<"Client Connected\n"<<endl;	
+	   thread (handle_client,clientsocket).detach();
+   }
    close(server_fd);
 
   return 0;
