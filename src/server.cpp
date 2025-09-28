@@ -26,7 +26,6 @@ void handle_client(int clientsocket)
 	request=string(buffer);
    }	
      
-   std::cout << "Client connected\n";
  
    /* For Response 200 */	
    istringstream iss (request);
@@ -124,8 +123,9 @@ int main(int argc, char **argv) {
    std::cout << "Waiting for a client to connect...\n";
   
    int clientsocket=accept(server_fd, (struct sockaddr *) &client_addr, (socklen_t *) &client_addr_len);
-	
-   //handle_client(clientsocket);
+
+   
+   cout<<"Client Connected\n"<<endl;	
    thread t(handle_client,clientsocket);
    t.detach();
    close(server_fd);
