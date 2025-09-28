@@ -85,7 +85,7 @@ int main(int argc, char **argv) {
    string desired_string(request.begin()+incoming_data,request.begin()+epos-1); //isko substr se bhi try krna hai 
    
    /*For user-agent content*/
-   string agent_find="User-Agent:"
+   string agent_find="User-Agent:";
    int pos=request.find(agent_find);
    int agent_start_pos=pos+agent_find.length()+1;
    int agent_end_pos=request.find('\r',agent_start_pos);
