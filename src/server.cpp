@@ -84,10 +84,17 @@ int main(int argc, char **argv) {
    int epos=request.find(http_find);   
    string desired_string(request.begin()+incoming_data,request.begin()+epos-1); //isko substr se bhi try krna hai 
    
-   string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "+to_string(desired_string.length())+"\r\n\r\n"+desired_string;
+   /*For user-agent content*/
+   string agent_find="User-Agent:"
+   int pos=request.find(agent_find);
+   int agent_start_pos=pos+agent_find.length()+1;
+   int agent_end_pos=request.find('\r',agent_start_pos);
+   string agent_data=request.substr(agent_start_pos,agent_end_pos-agent_start_pos);   
+
+   string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "+to_string(desired_string.length())+"\r\n\r\n"+agent_data+\r\nAccept:*/*\r\n\r\n;
    string response404="HTTP/1.1 404 Not Found\r\n\r\n";
    cout<<path<<endl;
-   if(path.find("/echo/")==0 || path == "/")
+   if(path.find("/echo/")==0 || path == "/"||path.find("user-agent")==0)
    	send(clientsocket,response200.data(),response200.size(),0);
    else
 	send(clientsocket,response404.data(),response404.size(),0);
