@@ -11,6 +11,72 @@
 #include <sstream>
 using namespace std;
 
+void handle_client(int clientsocket)
+{
+	
+   /*Extracting URL Path*/
+   char buffer[1024];
+   int received=recv(clientsocket,buffer,sizeof(buffer)-1,0);
+   string request;
+
+   if(received>0)
+   {
+	buffer[received]='\0';
+	request=string(buffer);
+   }	
+     
+   std::cout << "Client connected\n";
+ 
+   /* For Response 200 */	
+   istringstream iss (request);
+   string method,path,version;
+   iss>>method>>path>>version; /* this has data from stream*/
+	
+   /* finding /echo/ */  
+   string echo_find="/echo/";
+   int apos=request.find(echo_find);
+   int incoming_data=apos+echo_find.length();
+   string http_find="HTTP";
+   int epos=request.find(http_find);   
+   string desired_string(request.begin()+incoming_data,request.begin()+epos-1); //isko substr se bhi try krna hai 
+   
+   /*For user-agent content*/
+   string agent_find="User-Agent:";
+   int pos=request.find(agent_find);
+   int agent_start_pos=pos+agent_find.length()+1;
+   int agent_end_pos=request.find('\r',agent_start_pos);
+   string agent_data=request.substr(agent_start_pos,agent_end_pos-agent_start_pos);   
+
+   string response404="HTTP/1.1 404 Not Found\r\n\r\n";
+   cout<<path<<endl;
+   if(path.find("/echo/")==0)
+   {
+	
+	string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
+                           +to_string(desired_string.length())
+			   +"\r\n\r\n"
+			   +desired_string
+		           +"\r\n";
+        send(clientsocket,response200.data(),response200.size(),0);
+   }
+   else if(path.find=="/")
+   {
+	string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n";
+	send(clientsocket,response200.data(),response200.size(),0);
+   }	
+   else if(path.find("/user-agent")==0)
+   {
+	string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
+			    +to_string(agent_data.length())
+			    +"\r\n\r\n"
+			    +agent_data
+			    +"\r\n";
+       send(clientsocket,response200.data(),response200.size(),0);
+   } 	
+   else
+	send(clientsocket,response404.data(),response404.size(),0);
+ 	 
+}
 int main(int argc, char **argv) {
   // Flush after every std::cout / std::cerr
   std::cout << std::unitbuf;
@@ -57,64 +123,10 @@ int main(int argc, char **argv) {
    std::cout << "Waiting for a client to connect...\n";
   
    int clientsocket=accept(server_fd, (struct sockaddr *) &client_addr, (socklen_t *) &client_addr_len);
-
-   /*Extracting URL Path*/
-   char buffer[1024];
-   int received=recv(clientsocket,buffer,sizeof(buffer)-1,0);
-   string request;
-
-   if(received>0)
-   {
-	buffer[received]='\0';
-	request=string(buffer);
-   }	
-     
-   std::cout << "Client connected\n";
- 
-   /* For Response 200 */	
-   istringstream iss (request);
-   string method,path,version;
-   iss>>method>>path>>version; /* this has data from stream*/
 	
-   /* finding /echo/ */  
-   string echo_find="/echo/";
-   int apos=request.find(echo_find);
-   int incoming_data=apos+echo_find.length();
-   string http_find="HTTP";
-   int epos=request.find(http_find);   
-   string desired_string(request.begin()+incoming_data,request.begin()+epos-1); //isko substr se bhi try krna hai 
-   
-   /*For user-agent content*/
-   string agent_find="User-Agent:";
-   int pos=request.find(agent_find);
-   int agent_start_pos=pos+agent_find.length()+1;
-   int agent_end_pos=request.find('\r',agent_start_pos);
-   string agent_data=request.substr(agent_start_pos,agent_end_pos-agent_start_pos);   
-
-   string response404="HTTP/1.1 404 Not Found\r\n\r\n";
-   cout<<path<<endl;
-   if(path.find("/echo/")==0 || path == "/")
-   {
-	
-	string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
-                           +to_string(desired_string.length())
-			   +"\r\n\r\n"
-			   +desired_string
-		           +"\r\n";
-        send(clientsocket,response200.data(),response200.size(),0);
-   }	
-   else if(path.find("/user-agent")==0)
-   {
-	string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
-			    +to_string(agent_data.length())
-			    +"\r\n\r\n"
-			    +agent_data
-			    +"\r\n";
-       send(clientsocket,response200.data(),response200.size(),0);
-   } 	
-   else
-	send(clientsocket,response404.data(),response404.size(),0);
- 	 
+   //handle_client(clientsocket);
+   thread t(handle_client,clientsocket);
+   t.detach();
    close(server_fd);
 
   return 0;
