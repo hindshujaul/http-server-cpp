@@ -128,7 +128,8 @@ int main(int argc, char **argv) {
 
 
 	   cout<<"Client Connected\n"<<endl;	
-	   thread (handle_client,clientsocket).detach();
+	   thread t(handle_client,clientsocket);
+           t.detach();
    }
    close(server_fd);
 
