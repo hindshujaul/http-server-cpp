@@ -101,6 +101,7 @@ int main(int argc, char **argv) {
 			   +"\r\n\r\n"
 			   +desired_string
 		           +"\r\n";
+        send(clientsocket,response200.data(),response200.size(),0);
    }	
    else if(path.find("/user-agent")==0)
    {
@@ -109,6 +110,7 @@ int main(int argc, char **argv) {
 			    +"\r\n\r\n"
 			    +agent_data
 			    +"\r\n";
+       send(clientsocket,response200.data(),response200.size(),0);
    } 	
    else
 	send(clientsocket,response404.data(),response404.size(),0);
