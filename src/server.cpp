@@ -78,8 +78,8 @@ int main(int argc, char **argv) {
 	
    /* finding /echo/ */  
    string echo_find="/echo/";
-   int pos=request.find(echo_find);
-   int incoming_data=pos+echo_find.length();
+   int apos=request.find(echo_find);
+   int incoming_data=apos+echo_find.length();
    string http_find="HTTP";
    int epos=request.find(http_find);   
    string desired_string(request.begin()+incoming_data,request.begin()+epos-1); //isko substr se bhi try krna hai 
