@@ -72,19 +72,27 @@ int main(int argc, char **argv) {
    std::cout << "Client connected\n";
  
    /* For Response 200 */	
-   string response200="HTTP/1.1 200 OK\r\n\r\n";
-   string response404="HTTP/1.1 404 Not Found\r\n\r\n";
    istringstream iss (request);
    string method,path,version;
-   iss>>method>>path>>version;
-
+   iss>>method>>path>>version; /* this has data from stream*/
+	
+   /* finding /echo/ */  
+   string echo_find="/echo/";
+   int pos=request.find(echo_find);
+   int incoming_data=pos+echo_find.length();
+   string http_find="HTTP";
+   int epos=request.find(http_find);   
+   string desired_string(request.begin()+incoming_data,request.begin()+epos-1); //isko substr se bhi try krna hai 
+   
+   string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "+to_string(desired_string.length())+"\r\n\r\n"+desired_string;
+   string response404="HTTP/1.1 404 Not Found\r\n\r\n";
    cout<<path<<endl;
-   if(path=="/")
+   if(request.find("/echo/"))
    	send(clientsocket,response200.data(),response200.size(),0);
    else
 	send(clientsocket,response404.data(),response404.size(),0);
  	 
    close(server_fd);
 
-  return 0;
+  return 0
 }
