@@ -61,7 +61,7 @@ void handle_client(int clientsocket)
    }
    else if(path.find("/")==0)
    {
-	string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n";
+	string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n";
 	send(clientsocket,response200.data(),response200.size(),0);
    }	
    else if(path.find("/user-agent")==0)
