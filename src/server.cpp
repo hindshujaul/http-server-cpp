@@ -94,7 +94,7 @@ int main(int argc, char **argv) {
    string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "+to_string(agent_data.length())+"\r\n\r\n"+agent_data;
    string response404="HTTP/1.1 404 Not Found\r\n\r\n";
    cout<<path<<endl;
-   if(path.find("/echo/")==0 || path == "/"||path.find("user-agent")==0)
+   if(path.find("/echo/")==0 || path == "/"||path.find("/user-agent")==0)
    	send(clientsocket,response200.data(),response200.size(),0);
    else
 	send(clientsocket,response404.data(),response404.size(),0);
