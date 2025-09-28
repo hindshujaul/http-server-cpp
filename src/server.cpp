@@ -60,7 +60,7 @@ void handle_client(int clientsocket)
 		           +"\r\n";
         send(clientsocket,response200.data(),response200.size(),0);
    }
-   else if(path.find("/"==0)
+   else if(path.find("/")==0)
    {
 	string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n";
 	send(clientsocket,response200.data(),response200.size(),0);
