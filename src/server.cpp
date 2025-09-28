@@ -49,7 +49,7 @@ void handle_client(int clientsocket)
 
    string response404="HTTP/1.1 404 Not Found\r\n\r\n";
    cout<<path<<endl;
-   if(path.find("/echo/")==0)
+   if(path=="/echo/")
    {
 	
 	string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
@@ -59,12 +59,12 @@ void handle_client(int clientsocket)
 		           +"\r\n";
         send(clientsocket,response200.data(),response200.size(),0);
    }
-   else if(path.find("/")==0)
+   else if(path=="/")
    {
 	string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n";
 	send(clientsocket,response200.data(),response200.size(),0);
    }	
-   else if(path.find("/user-agent")==0)
+   else if(path=="/user-agent")
    {
 	string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
 			    +to_string(agent_data.length())
