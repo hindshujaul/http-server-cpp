@@ -23,7 +23,7 @@ string getSubstr(string &string_find,string &request)
 }
 string extractfilename(string &request,string &to_find)
 {
-	return getSubstr(to_find,&request);
+	return getSubstr(to_find,request);
 }
 string parseDirectory(int argc,char*argv[])
 {
