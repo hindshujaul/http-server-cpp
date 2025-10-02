@@ -17,7 +17,7 @@ string getSubstr(string &string_find,string &request)
 	int spos=request.find(string_find);
 	int start=spos+string_find.length();
         int epos=request.find(" ",start);
-        int end=epos-1;
+        int end=epos;
         string res=request.substr(start,end-start);
 	return res;
 }
