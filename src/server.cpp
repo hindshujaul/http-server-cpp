@@ -11,8 +11,42 @@
 #include <sstream>
 #include <thread>
 using namespace std;
-
-void handle_client(int clientsocket)
+string getSubstr(string &string_find,string &request)
+{
+	int spos=request.find(string_find);
+	int start=spos+string_find();
+        int epos=request.find(" ",start);
+        int end=epos-1;
+        string res=request.substr(start,end-start);)
+}
+string extractfilename(strings &request)
+{
+	return getSubstr("files",&request);
+}
+string parseDirectory(int argc,char*argv[])
+{
+	for(int i=0;i<argc;i++)
+	{
+		if(string(argv[i]=="--directory" && i+1<argc)
+		{
+			return argv[i+1];
+		}
+	}
+    return "";
+}
+string find_content_type(string &request)
+{
+	string content_find="Content-Type:";
+	int spos=request.find(content_find);
+        int start=spos+content_find.length()+1;
+        string end_find="\r";
+	int epos=request.find(end_find,start);
+        int end=epos-1;
+        string res=request.substr(start,end-start);
+	return res;
+        
+}
+void handle_client(int clientsocket,string directory)
 {
 	
    /*Extracting URL Path*/
@@ -49,10 +83,14 @@ void handle_client(int clientsocket)
 
    string response404="HTTP/1.1 404 Not Found\r\n\r\n";
    cout<<path<<endl;
+   
+   /*function to find content type*/
+   string content_type=find_content_type(request);
+   int content_length=content_type.length();
    if(path.find("/echo/")==0)
    {
 	
-	string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
+	string response200="HTTP/1.1 200 OK\r\nContent-Type: "+content_type+"\r\nContent-Length: "
                            +to_string(desired_string.length())
 			   +"\r\n\r\n"
 			   +desired_string
@@ -61,23 +99,50 @@ void handle_client(int clientsocket)
    }
    else if(path=="/")
    {
-	string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n";
+	string response200="HTTP/1.1 200 OK\r\nContent-Type: "+content_type+"\r\n\r\n";
 	send(clientsocket,response200.data(),response200.size(),0);
    }	
    else if(path=="/user-agent")
    {
-	string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
+	string response200="HTTP/1.1 200 OK\r\nContent-Type: "+content_type+"\r\nContent-Length: "
 			    +to_string(agent_data.length())
 			    +"\r\n\r\n"
 			    +agent_data
 			    +"\r\n";
        send(clientsocket,response200.data(),response200.size(),0);
+   
+   }
+   else if(path.find("/files/)==0)
+   {
+		//extracting filename
+                string filename=extractfilename(request);
+                string fullpath=directory+filename;
+		ifstream file(fullpath,binary);
+		if(file.good())
+		{
+			stringstream buff_s;
+			buff_s << file.rdbuf();
+ 			string file_contents=buff_s.str();
+			
+		string response200=HTTP/1.1 200 OK\r\nContent-Type: "+content_type+"\r\nContent-Length: "
+				  +to_string(file_contents.length())
+				  +"\r\n\r\n"
+				  +file_contents
+				  +"\r\n";
+		send(clientsocket,response200.data(),response200.size(),0);	
+		}
+		else
+		{
+			string response404="HTTP/1.1 404 Not Found\r\n\r\n";
+			send(clientsocket,response404.data(),response404.size(),0);
+		}
+                 
    } 	
    else
 	send(clientsocket,response404.data(),response404.size(),0);
  	 
 }
-int main(int argc, char **argv) {
+int main(int argc, char *argv[]) {
   // Flush after every std::cout / std::cerr
   std::cout << std::unitbuf;
   std::cerr << std::unitbuf;
@@ -122,13 +187,24 @@ int main(int argc, char **argv) {
   
    std::cout << "Waiting for a client to connect...\n";
   
+   //Directory parser 
+   string directory=parseDirectory(argc,argv);
+   
+   if(directory.empty())
+   {
+	cout<<"No directory in cmd"<<endl;
+   }
+   else
+   {
+	cout<<"directory:-"<<directory<<endl;
+   }
    while(1)
    {	
 	   int clientsocket=accept(server_fd, (struct sockaddr *) &client_addr, (socklen_t *) &client_addr_len);
 
 
 	   cout<<"Client Connected\n"<<endl;	
-	   thread t(handle_client,clientsocket); //can be done like thread (handle_client,clientsocket).detach();
+	   thread t(handle_client,clientsocket,directory); //can be done like thread (handle_client,clientsocket).detach();
            t.detach();
    }
    close(server_fd);
