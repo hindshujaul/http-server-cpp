@@ -10,6 +10,7 @@
 #include <string>
 #include <sstream>
 #include <thread>
+#include <fstream>
 using namespace std;
 string getSubstr(string &string_find,string &request)
 {
