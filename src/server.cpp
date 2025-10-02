@@ -120,6 +120,8 @@ void handle_client(int clientsocket,string directory)
 		string to_find="/files/";
                 string filename=extractfilename(request,to_find);
                 string fullpath=directory+filename;
+		cout<<"FILENAME"<<filename<<endl;
+		cout<<"FULLPATH"<<fullpath<<endl;
 		ifstream file(fullpath,ios::binary);
 		if(file.good())
 		{
