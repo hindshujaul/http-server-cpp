@@ -14,12 +14,12 @@ using namespace std;
 string getSubstr(string &string_find,string &request)
 {
 	int spos=request.find(string_find);
-	int start=spos+string_find();
+	int start=spos+string_find;
         int epos=request.find(" ",start);
         int end=epos-1;
-        string res=request.substr(start,end-start);)
+        string res=request.substr(start,end-start);
 }
-string extractfilename(strings &request)
+string extractfilename(string &request)
 {
 	return getSubstr("files",&request);
 }
@@ -112,19 +112,19 @@ void handle_client(int clientsocket,string directory)
        send(clientsocket,response200.data(),response200.size(),0);
    
    }
-   else if(path.find("/files/)==0)
+   else if(path.find("/files/")==0)
    {
 		//extracting filename
                 string filename=extractfilename(request);
                 string fullpath=directory+filename;
-		ifstream file(fullpath,binary);
+		ifstream file(fullpath,ios::binary);
 		if(file.good())
 		{
 			stringstream buff_s;
 			buff_s << file.rdbuf();
  			string file_contents=buff_s.str();
 			
-		string response200=HTTP/1.1 200 OK\r\nContent-Type: "+content_type+"\r\nContent-Length: "
+		string response200="HTTP/1.1 200 OK\r\nContent-Type: "+content_type+"\r\nContent-Length: "
 				  +to_string(file_contents.length())
 				  +"\r\n\r\n"
 				  +file_contents
