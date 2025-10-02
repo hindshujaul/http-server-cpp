@@ -106,7 +106,7 @@ void handle_client(int clientsocket,string directory)
    }	
    else if(path=="/user-agent")
    {
-	string response200="HTTP/1.1 200 OK\r\nContent-Type: "+content_type+"\r\nContent-Length: "
+	string response200="HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream"\r\nContent-Length: "
 			    +to_string(agent_data.length())
 			    +"\r\n\r\n"
 			    +agent_data
