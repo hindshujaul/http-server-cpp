@@ -176,7 +176,7 @@ void handle_client(int clientsocket,string directory)
 		int end=request.length();
 		string client_str=request.substr(start,end-start);
 		//Write to file
-		if(writeToFile(client_str,filename)==0)
+		if(writeToFile(client_str,filename))
 		{
 			cout<<"File write done"<<endl;
 			string response201="HTTP/1.1 201 Created\r\n\r\n";
