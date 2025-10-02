@@ -129,7 +129,7 @@ void handle_client(int clientsocket,string directory)
 			buff_s << file.rdbuf();
  			string file_contents=buff_s.str();
 			
-		string response200="HTTP/1.1 200 OK\r\nContent-Type: "+content_type+"\r\nContent-Length: "
+		string response200="HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\\r\nContent-Length: "
 				  +to_string(file_contents.length())
 				  +"\r\n\r\n"
 				  +file_contents
