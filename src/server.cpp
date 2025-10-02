@@ -170,7 +170,7 @@ void handle_client(int clientsocket,string directory)
 		cout<<"FILENAME"<<filename<<endl;
 		cout<<"FULLPATH"<<fullpath<<endl;
 	        //extracting data to write 
-		string to_find_file="\r\n";
+		string to_find_file="\r\n\r\n";
    		int spos=request.rfind(to_find_file);
 		int start=spos+to_find.length();
 		int end=request.length();
