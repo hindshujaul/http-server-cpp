@@ -29,7 +29,7 @@ string parseDirectory(int argc,char*argv[])
 {
 	for(int i=0;i<argc;i++)
 	{
-		if(string(argv[i]=="--directory" && i+1<argc)
+		if(string(argv[i])=="--directory" && i+1<argc)
 		{
 			return argv[i+1];
 		}
