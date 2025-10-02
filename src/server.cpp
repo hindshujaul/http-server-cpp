@@ -172,7 +172,7 @@ void handle_client(int clientsocket,string directory)
 	        //extracting data to write 
 		string to_find_file="\r\n\r\n";
    		int spos=request.rfind(to_find_file);
-		int start=spos+to_find.length();
+		int start=spos+to_find_file.length();
 		int end=request.length();
 		string client_str=request.substr(start,end-start);
 		//Write to file
