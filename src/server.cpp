@@ -21,9 +21,9 @@ string getSubstr(string &string_find,string &request)
         string res=request.substr(start,end-start);
 	return res;
 }
-string extractfilename(string &request)
+string extractfilename(string &request,string &to_find)
 {
-	return getSubstr("files",&request);
+	return getSubstr(to_find,&request);
 }
 string parseDirectory(int argc,char*argv[])
 {
@@ -117,7 +117,8 @@ void handle_client(int clientsocket,string directory)
    else if(path.find("/files/")==0)
    {
 		//extracting filename
-                string filename=extractfilename(request);
+		string to_find="/files/";
+                string filename=extractfilename(request,to_find);
                 string fullpath=directory+filename;
 		ifstream file(fullpath,ios::binary);
 		if(file.good())
