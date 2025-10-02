@@ -26,6 +26,14 @@ bool writeToFile(string &client_str,string &filename)
 
 	file.close();
 	
+	if(filesystem::exists(filename))
+	{
+		cout<<"FILE PRESENT"<<endl;
+	}
+	else	
+	{
+		cout<<"FILE NOT PRESENT"<<endl;
+	}
 	cout<<"Kaam ho gaya file aur bandh bhi ho gaya"<<endl;
 	
 	return true;
