@@ -12,6 +12,24 @@
 #include <thread>
 #include <fstream>
 using namespace std;
+bool writeToFile(string &client_str,string &filename) 
+{
+	ofstream file(filename);
+	if(!file.is_open())
+	{
+		cout<<"File nhi khula kutch toh locha hai"<<endl;
+		return false;	
+	}
+	
+	file<<client_str;
+
+	file.close();
+	
+	cout<<"Kaam ho gaya file aur bandh bhi ho gaya"<<endl;
+	
+	return true;
+	
+}
 string getSubstr(string &string_find,string &request)
 {
 	int spos=request.find(string_find);
@@ -114,7 +132,7 @@ void handle_client(int clientsocket,string directory)
        send(clientsocket,response200.data(),response200.size(),0);
    
    }
-   else if(path.find("/files/")==0)
+   else if(method=="GET"&& path.find("/files/")==0)
    {
 		//extracting filename
 		string to_find="/files/";
@@ -142,7 +160,32 @@ void handle_client(int clientsocket,string directory)
 			send(clientsocket,response404.data(),response404.size(),0);
 		}
                  
-   } 	
+   }
+   else if(method=="POST" && path.find("/files/")==0)
+   {
+		string to_find="/files/";
+                string filename=extractfilename(request,to_find);
+                string fullpath=directory+filename;
+		cout<<"FILENAME"<<filename<<endl;
+		cout<<"FULLPATH"<<fullpath<<endl;
+	        //extracting data to write 
+		string to_find="\r\n";
+   		int spos=request.rfind(to_find);
+		int start=spos+to_find.length();
+		int end=request.length();
+		string client_str=request.substr(start,end-start);
+		//Write to file
+		if(writeToFile(client_str,filename)==0)
+		{
+			cout<<"File write done"<<endl;
+			string response201="HTTP/1.1 201 Created\r\n\r\n";
+			send(clientsocket,response201.data(),response201.size(),0);
+		}
+		else
+		{
+			cout<<"Falied to write to file"<<endl;
+		}	
+   }	
    else
 	send(clientsocket,response404.data(),response404.size(),0);
  	 
