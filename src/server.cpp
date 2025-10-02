@@ -19,6 +19,7 @@ string getSubstr(string &string_find,string &request)
         int epos=request.find(" ",start);
         int end=epos-1;
         string res=request.substr(start,end-start);
+	return res;
 }
 string extractfilename(string &request)
 {
