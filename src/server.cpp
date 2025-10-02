@@ -27,7 +27,7 @@ bool writeToFile(string &client_str,string &fullpath)
 
 	file.close();
 	
-	if(filesystem::exists(filename))
+	if(filesystem::exists(fullpath))
 	{
 		cout<<"FILE PRESENT"<<endl;
 	}
