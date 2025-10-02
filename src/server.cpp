@@ -15,7 +15,7 @@
 using namespace std;
 bool writeToFile(string &client_str,string &filename) 
 {
-	ofstream file(filename);
+	ofstream file(filename,ios::binary);
 	if(!file.is_open())
 	{
 		cout<<"File nhi khula kutch toh locha hai"<<endl;
