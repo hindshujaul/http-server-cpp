@@ -13,9 +13,9 @@
 #include <fstream>
 #include <filesystem>
 using namespace std;
-bool writeToFile(string &client_str,string &filename) 
+bool writeToFile(string &client_str,string &fullpath) 
 {
-	ofstream file(filename,ios::binary);
+	ofstream file(fullpath,ios::binary);
 	if(!file.is_open())
 	{
 		cout<<"File nhi khula kutch toh locha hai"<<endl;
@@ -185,7 +185,7 @@ void handle_client(int clientsocket,string directory)
 		int end=request.length();
 		string client_str=request.substr(start,end-start);
 		//Write to file
-		if(writeToFile(client_str,filename))
+		if(writeToFile(client_str,fullpath))
 		{
 			cout<<"File write done"<<endl;
 			string response201="HTTP/1.1 201 Created\r\n\r\n";
