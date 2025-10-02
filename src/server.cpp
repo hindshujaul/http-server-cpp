@@ -92,7 +92,7 @@ void handle_client(int clientsocket,string directory)
    if(path.find("/echo/")==0)
    {
 	
-	string response200="HTTP/1.1 200 OK\r\nContent-Type: "+content_type+"\r\nContent-Length: "
+	string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
                            +to_string(desired_string.length())
 			   +"\r\n\r\n"
 			   +desired_string
@@ -101,12 +101,12 @@ void handle_client(int clientsocket,string directory)
    }
    else if(path=="/")
    {
-	string response200="HTTP/1.1 200 OK\r\nContent-Type: "+content_type+"\r\n\r\n";
+	string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n";
 	send(clientsocket,response200.data(),response200.size(),0);
    }	
    else if(path=="/user-agent")
    {
-	string response200="HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: "
+	string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
 			    +to_string(agent_data.length())
 			    +"\r\n\r\n"
 			    +agent_data
