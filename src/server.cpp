@@ -20,7 +20,8 @@ bool writeToFile(string &client_str,string &filename)
 		cout<<"File nhi khula kutch toh locha hai"<<endl;
 		return false;	
 	}
-	
+
+	cout<<"CLIENT STR:"<<client_str<<endl;	
 	file<<client_str;
 
 	file.close();
