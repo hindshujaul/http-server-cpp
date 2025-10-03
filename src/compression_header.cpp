@@ -37,6 +37,7 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 				"Content-Encoding: "+compression_scheme+"\r\n"
 				"Content-Length: "+to_string(filename.length())
 				+"\r\n\r\n";
+		cout<<"Inside gzip"<<endl;
 		send(clientsocket,response.data(),response.size(),0);
 
 		//Body ko separately bhej rahe hain
@@ -49,7 +50,7 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 				"Content-Length: "+to_string(filename.length())
 				+"\r\n\r\n";
 	
-		
+		cout<<"Nahi mila gzip"<<endl;	
 		send(clientsocket,response.data(),response.size(),0);
 
 		
