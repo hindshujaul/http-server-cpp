@@ -1,5 +1,5 @@
 #include <string>
-#include <ifstream>
+#include <fstream>
 #include <iostream>
 void header_compress(int &clientsocket,string &header,string &path,string &request)
 {
