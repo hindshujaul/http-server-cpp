@@ -42,8 +42,9 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 			}
 		}
 	}
-	if(compression_scheme=="gzip")
+	if(compression_scheme!="")
 	{
+		cout<<compression_scheme<<endl;
 		string response="HTTP/1.1 200 OK\r\n"
 				"Content-Type: text/plain\r\n"
 				"Content-Encoding: "+compression_scheme+"\r\n"
