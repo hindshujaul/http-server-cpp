@@ -198,7 +198,7 @@ void handle_client(int clientsocket,string directory)
 			cout<<"Falied to write to file"<<endl;
 		}	
    }
-   else if(method =="GET" && header.find("gzip))
+   else if(method =="GET" && header.find("gzip"))
    {
 	header_compress(clientsocket,header,path,request);		
    }			
