@@ -127,7 +127,7 @@ void handle_client(int clientsocket,string directory)
 			   +desired_string
 		           +"\r\n";
 	
-	if(request.find("Accept-Encoding"!=string::npos)
+	if(request.find("Accept-Encoding")!=string::npos)
 		header_compress(clientsocket,header,path,request);		
         send(clientsocket,response200.data(),response200.size(),0);
    }
