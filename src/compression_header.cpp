@@ -25,11 +25,23 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 	int filesize=file.tellg();
 	cout<<filesize<<endl;*/
         
-	
-	istringstream ish(header);
-	string accept_encoding,compression_scheme;
-	ish>>accept_encoding>>compression_scheme;
-
+	string compression_scheme="";
+	istringstream stream(request);
+	string line;
+	while(getline(stream,line)
+	{
+		if(line.find("Accept-Encoding:")!=string::npos)
+		{
+			int pos=line.find(":");
+			if(pos!=string::npos)
+			{
+				compression_scheme=line.substr(pos+1);
+				while(!compression_scheme.empty() && isspace(compression_scheme[0]))
+					compression_scheme.erase(0,1);
+					
+			}
+		}
+	}
 	if(compression_scheme!="")
 	{
 		string response="HTTP/1.1 200 OK\r\n"
