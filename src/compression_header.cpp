@@ -38,6 +38,8 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 				compression_scheme=line.substr(pos+1);
 				while(!compression_scheme.empty() && isspace(compression_scheme[0]))
 					compression_scheme.erase(0,1);
+				while (!compression_scheme.empty() && isspace(compression_scheme[compression_scheme.length() - 1]))
+                			compression_scheme.pop_back();
 					
 			}
 			cout<<"INSIDE STREAM"<<compression_scheme<<endl;
