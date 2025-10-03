@@ -14,7 +14,7 @@
 #include <filesystem>
 #include "compression_header.cpp"
 using namespace std;
-void header_compress(int &clientsocket,string &header,string &path,string &request);
+//void header_compress(int &clientsocket,string &header,string &path,string &request);
 bool writeToFile(string &client_str,string &fullpath) 
 {
 	ofstream file(fullpath,ios::binary);
