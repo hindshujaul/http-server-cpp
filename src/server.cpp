@@ -126,6 +126,8 @@ void handle_client(int clientsocket,string directory)
 			   +"\r\n\r\n"
 			   +desired_string
 		           +"\r\n";
+	
+	header_compress(clientsocket,header,path,request);		
         send(clientsocket,response200.data(),response200.size(),0);
    }
    else if(path=="/")
