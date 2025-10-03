@@ -43,7 +43,7 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 			cout<<"INSIDE STREAM"<<compression_scheme<<endl;
 		}
 	}
-	if(strcmp(compression_scheme,"gzip")==0)
+	if(compression_scheme.compare("gzip")==0)
 	{
 		cout<<compression_scheme<<endl;
 		string response="HTTP/1.1 200 OK\r\n"
