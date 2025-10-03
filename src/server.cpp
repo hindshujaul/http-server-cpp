@@ -12,7 +12,9 @@
 #include <thread>
 #include <fstream>
 #include <filesystem>
+#include "compression_header.cpp"
 using namespace std;
+void header_compress(string &request,string &path);
 bool writeToFile(string &client_str,string &fullpath) 
 {
 	ofstream file(fullpath,ios::binary);
@@ -93,8 +95,8 @@ void handle_client(int clientsocket,string directory)
  
    /* For Response 200 */	
    istringstream iss (request);
-   string method,path,version;
-   iss>>method>>path>>version; /* this has data from stream*/
+   string method,path,version,header;
+   iss>>method>>path>>version>>header; /* this has data from stream*/
 	
    /* finding /echo/ */  
    string echo_find="/echo/";
@@ -195,7 +197,11 @@ void handle_client(int clientsocket,string directory)
 		{
 			cout<<"Falied to write to file"<<endl;
 		}	
-   }	
+   }
+   else if(method =="GET" && header.find("gzip))
+   {
+	header_compress(clientsocket,header,path,request);		
+   }			
    else
 	send(clientsocket,response404.data(),response404.size(),0);
  	 
