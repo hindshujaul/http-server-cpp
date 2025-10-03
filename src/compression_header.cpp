@@ -45,7 +45,12 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 			cout<<"INSIDE STREAM"<<compression_scheme<<endl;
 		}
 	}
-	if(compression_scheme.compare("gzip")==0)
+	if(compression_scheme.compare("")==0)
+	{
+		string response="HTTP/1.1 404 Not Found\r\n\r\n";
+		send(clientsocket,response.data(),response.size(),0);
+	}
+	else if(compression_scheme.compare("gzip")==0)
 	{
 		cout<<compression_scheme<<endl;
 		string response="HTTP/1.1 200 OK\r\n"

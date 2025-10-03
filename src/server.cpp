@@ -132,7 +132,6 @@ void handle_client(int clientsocket,string directory)
    }
    else if(path=="/")
    {
-	cout<<"I am here in / section"<<endl;
 	string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n";
 	send(clientsocket,response200.data(),response200.size(),0);
    }	
