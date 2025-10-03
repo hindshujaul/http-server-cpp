@@ -12,6 +12,7 @@
 #include <thread>
 #include <fstream>
 #include <filesystem>
+using namespace std;
 void header_compress(int &clientsocket,string &header,string &path,string &request)
 {
 	string echo_find="/echo/";
