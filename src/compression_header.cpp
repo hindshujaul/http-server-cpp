@@ -40,6 +40,7 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 					compression_scheme.erase(0,1);
 					
 			}
+			cout<<INSIDE STREAM<<compression_scheme<<endl;
 		}
 	}
 	if(compression_scheme=="gzip")
