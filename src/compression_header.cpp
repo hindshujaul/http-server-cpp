@@ -28,7 +28,7 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 	string compression_scheme="";
 	istringstream stream(request);
 	string line;
-	while(getline(stream,line)
+	while(getline(stream,line))
 	{
 		if(line.find("Accept-Encoding:")!=string::npos)
 		{
