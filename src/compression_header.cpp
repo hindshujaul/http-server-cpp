@@ -1,3 +1,6 @@
+#include <string>
+#include <ifstream>
+#include <iostream>
 void header_compress(int &clientsocket,string &header,string &path,string &request)
 {
 	string echo_find="/echo/";
