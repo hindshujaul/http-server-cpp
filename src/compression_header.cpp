@@ -42,7 +42,7 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 			}
 		}
 	}
-	if(compression_scheme!="")
+	if(compression_scheme!="invalid-encoding")
 	{
 		cout<<compression_scheme<<endl;
 		string response="HTTP/1.1 200 OK\r\n"
