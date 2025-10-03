@@ -21,9 +21,10 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 	int epos=request.find(" ",start);
 	string filename=path.substr(start,epos-start);
 	
-	ifstream file(filename,ios::ate);
+      /*  ifstream file(filename,ios::ate);
 	int filesize=file.tellg();
-	cout<<filesize<<endl;
+	cout<<filesize<<endl;*/
+        
 	
 	istringstream ish(header);
 	string accept_encoding,compression_scheme;
@@ -34,19 +35,25 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 		string response="HTTP/1.1 200 OK\r\n"
 				"Content-Type: text/plain\r\n"
 				"Content-Encoding: "+compression_scheme+"\r\n"
-				"Content-Length: "+to_string(filesize)
+				"Content-Length: "+to_string(filename.length())
 				+"\r\n\r\n";
 		send(clientsocket,response.data(),response.size(),0);
+
+		//Body ko separately bhej rahe hain
+		send(clientsocket,filename.data(),filename.size(),0);
 	}
 	else
 	{	
 		string response="HTTP/1.1 200 OK\r\n"
 				"Content-Type: text/plain\r\n"
-				"Content-Length: "+to_string(filesize)
+				"Content-Length: "+to_string(filename.length())
 				+"\r\n\r\n";
 	
 		
 		send(clientsocket,response.data(),response.size(),0);
+
+		
+		send(clientsocket,filename.data(),filename.size(),0);
 	}	
 }
 
