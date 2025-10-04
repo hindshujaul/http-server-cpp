@@ -33,13 +33,13 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 		if(line.find("Accept-Encoding:")!=string::npos)
 		{
 			//accept encoding k baad substring bana lete hain
-			int pos=line.find(":");
+			int pos=line.find(":")+1;
 			string compression_scheme_str=line.substr(pos);
 			if(compression_scheme_str.find("gzip")!=string::npos)
 			{
 				compression_scheme="gzip";
 			}
-			else if(compression_scheme_str.find("invalid_encoding")!=string::npos)
+			else if(compression_scheme_str.find("invalid")!=string::npos)
 			{	
 				compression_scheme="invalid_encoding";
 				cout<<"INVALID "<<compression_scheme<<endl;		
