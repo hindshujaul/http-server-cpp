@@ -1,17 +1,4 @@
-#include <iostream>
-#include <cstdlib>
-#include <string>
-#include <cstring>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <netdb.h>
-#include <string>
-#include <sstream>
-#include <thread>
-#include <fstream>
-#include <filesystem>
+#include "common_header.h"
 using namespace std;
 void header_compress(int &clientsocket,string &header,string &path,string &request)
 {
