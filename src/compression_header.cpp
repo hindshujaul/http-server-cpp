@@ -33,7 +33,7 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 		if(line.find("Accept-Encoding:")!=string::npos)
 		{
 			//accept encoding k baad substring bana lete hain
-			int pos=line.find(":")
+			int pos=line.find(":");
 			compression_scheme_str==line.substr(pos);
 			if(compression_scheme_str.find("gzip")
 			{
