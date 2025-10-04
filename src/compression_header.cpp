@@ -43,7 +43,11 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 			{	
 				compression_scheme="invalid_encoding";		
 			}
-		
+			else if(compression_scheme_str.find("encoding-1")!=string::npos)
+			{
+				compression_scheme="encoding";		
+			}
+				
 		}
 	}
 	if(compression_scheme.compare("")==0)
