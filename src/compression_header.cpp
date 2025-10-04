@@ -32,7 +32,22 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 	{
 		if(line.find("Accept-Encoding:")!=string::npos)
 		{
-			int pos=line.find(":");
+			//accept encoding k baad substring bana lete hain
+			int pos=line.find(":")
+			compression_scheme_str==line.substr(pos);
+			if(compression_scheme_str.find("gzip")
+			{
+				compression_scheme="gzip";
+			}
+			else if(compression_scheme_str.find("invalid_encoding"))
+			{	
+				compression_scheme="invalid_encoding";		
+			}
+		/*	else if(compression_scheme_str.find("encoding"))
+			{
+				compression_scheme="encoding";		
+			}*/
+		/*	int pos=line.find(":");
 			if(pos!=string::npos)
 			{
 				compression_scheme=line.substr(pos+1);
@@ -41,7 +56,8 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 				while (!compression_scheme.empty() && isspace(compression_scheme[compression_scheme.length() - 1]))
                 			compression_scheme.pop_back();
 					
-			}
+			}*/
+		
 		}
 	}
 	if(compression_scheme.compare("")==0)
