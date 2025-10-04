@@ -39,7 +39,7 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 			{
 				compression_scheme="gzip";
 			}
-			else if(compression_scheme_str.find("invalid_encoding")!=npos)
+			else if(compression_scheme_str.find("invalid_encoding")!=string::npos)
 			{	
 				compression_scheme="invalid_encoding";		
 			}
