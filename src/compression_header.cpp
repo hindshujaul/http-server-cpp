@@ -42,7 +42,6 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
                 			compression_scheme.pop_back();
 					
 			}
-			cout<<"INSIDE STREAM"<<compression_scheme<<endl;
 		}
 	}
 	if(compression_scheme.compare("")==0)
