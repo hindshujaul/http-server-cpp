@@ -58,7 +58,7 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 		
 		string buffer(compressed_size,'\0');
 		
-		int result=compress2((Bytef*)buffer.data(),&compressed_size,(const Bytef*)str.c_str(),str.length(),Z_BEST_COMPRESSION);
+		int result=compress2((Bytef*)buffer.data(),&compressed_size,(const Bytef*)filename.c_str(),filename.length(),Z_BEST_COMPRESSION);
 		buffer.resize(compressed_size);
 		
 		send(clientsocket,response.data(),response.size(),0);
