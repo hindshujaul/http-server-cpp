@@ -15,6 +15,7 @@
 #include <fstream>
 #include <filesystem>
 #include <string>
+#include <zlib.h>
 // Use std::string explicitly or `using namespace std;`
 void header_compress(int &clientsocket, std::string &header, std::string &path, std::string &request);
 

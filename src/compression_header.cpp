@@ -53,10 +53,18 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 				"Content-Length: "+to_string(filename.length())
 				+"\r\n\r\n";
 		cout<<"Inside gzip"<<endl;
+		//Gzip compression support 
+		uLongf compressed_size=compressBound(filename.length());
+		
+		string buffer(compressed_size,'\0');
+		
+		int result=compress2((Bytef*)buffer.data(),&compressed_size,(const Bytef*)str.c_str(),str.length(),Z_BEST_COMPRESSION);
+		buffer.resize(compressed_size);
+		
 		send(clientsocket,response.data(),response.size(),0);
 
 		//Body ko separately bhej rahe hain
-		send(clientsocket,filename.data(),filename.size(),0);
+		send(clientsocket,buffer.data(),buffer.size(),0);
 	}
 	else
 	{	
