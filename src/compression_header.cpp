@@ -35,28 +35,14 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 			//accept encoding k baad substring bana lete hain
 			int pos=line.find(":");
 			string compression_scheme_str=line.substr(pos);
-			if(compression_scheme_str.find("gzip"))
+			if(compression_scheme_str.find("gzip")!=string::npos)
 			{
 				compression_scheme="gzip";
 			}
-			else if(compression_scheme_str.find("invalid_encoding"))
+			else if(compression_scheme_str.find("invalid_encoding")!=npos)
 			{	
 				compression_scheme="invalid_encoding";		
 			}
-		/*	else if(compression_scheme_str.find("encoding"))
-			{
-				compression_scheme="encoding";		
-			}*/
-		/*	int pos=line.find(":");
-			if(pos!=string::npos)
-			{
-				compression_scheme=line.substr(pos+1);
-				while(!compression_scheme.empty() && isspace(compression_scheme[0]))
-					compression_scheme.erase(0,1);
-				while (!compression_scheme.empty() && isspace(compression_scheme[compression_scheme.length() - 1]))
-                			compression_scheme.pop_back();
-					
-			}*/
 		
 		}
 	}
