@@ -62,7 +62,7 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 		}
 		uLongf max_size=deflateBound(&zs,filename.length());
 		
-		string buffer=(max_size,'\0');
+		string buffer(max_size,'\0');
 		
 		zs.next_in=(Bytef*)filename.c_str();
 		zs.avail_in=filename.length();
