@@ -54,11 +54,28 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 				+"\r\n\r\n";
 		cout<<"Inside gzip"<<endl;
 		//Gzip compression support 
-		uLongf compressed_size=compressBound(filename.length());
+		z_stream zs={};
 		
-		string buffer(compressed_size,'\0');
+		if(deflateInit2(&zs,Z_BEST_COMPRESSION,Z_DEFLATE,15+16,8,Z_DEFAULT_STRATEGY)!=Z_OK)
+		{
+			cout<<"compression nahi hua"<<endl;
+		}
+		uLongf max_size=deflateBound(&zs,filename.length());
 		
-		int result=compress2((Bytef*)buffer.data(),&compressed_size,(const Bytef*)filename.c_str(),filename.length(),Z_BEST_COMPRESSION);
+		string buffer=(max_size,'\0');
+		
+		zs.next_in=(Bytef*)filename.c_str();
+		zs.avail_in=filename.length();
+		zs.next_out=(Bytef*)buffer.data();
+		zs.avail_out=max_size;
+		
+		if(deflate(&zs,Z_FINISH)!=ZSTREAM_END)
+		{
+			deflateEnd(&zs);
+		}
+		uLongf =compressed_size=max_size - zs.avail_out;
+		deflateEnd(&zs);
+		
 		buffer.resize(compressed_size);
 		
 		send(clientsocket,response.data(),response.size(),0);
