@@ -56,7 +56,7 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 		//Gzip compression support 
 		z_stream zs={};
 		
-		if(deflateInit2(&zs,Z_BEST_COMPRESSION,Z_DEFLATE,15+16,8,Z_DEFAULT_STRATEGY)!=Z_OK)
+		if(deflateInit2(&zs,Z_BEST_COMPRESSION,Z_DEFLATED,15+16,8,Z_DEFAULT_STRATEGY)!=Z_OK)
 		{
 			cout<<"compression nahi hua"<<endl;
 		}
@@ -69,11 +69,11 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 		zs.next_out=(Bytef*)buffer.data();
 		zs.avail_out=max_size;
 		
-		if(deflate(&zs,Z_FINISH)!=ZSTREAM_END)
+		if(deflate(&zs,Z_FINISH)!=Z_STREAM_END)
 		{
 			deflateEnd(&zs);
 		}
-		uLongf =compressed_size=max_size - zs.avail_out;
+		uLongf compressed_size=max_size - zs.avail_out;
 		deflateEnd(&zs);
 		
 		buffer.resize(compressed_size);
