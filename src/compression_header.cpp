@@ -41,11 +41,13 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 			}
 			else if(compression_scheme_str.find("invalid_encoding")!=string::npos)
 			{	
-				compression_scheme="invalid_encoding";		
+				compression_scheme="invalid_encoding";
+				cout<<"INVALID "<<compression_scheme<<endl;		
 			}
 			else if(compression_scheme_str.find("encoding-1")!=string::npos)
 			{
-				compression_scheme="encoding";		
+				compression_scheme="encoding";
+				cout<<"ENCODING "<<compression_scheme<<endl;		
 			}
 				
 		}
