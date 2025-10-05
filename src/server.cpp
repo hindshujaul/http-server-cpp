@@ -149,8 +149,7 @@ void process_request(int clientsocket,string directory,string request)
 			string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
 				+to_string(desired_string.length())
 				+"\r\n\r\n"
-				+desired_string
-				+"\r\n";
+				+desired_string;
 
 			if(request.find("Accept-Encoding")!=string::npos)
 				header_compress(clientsocket,header,path,request);	
@@ -174,8 +173,7 @@ void process_request(int clientsocket,string directory,string request)
 			string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
 				+to_string(agent_data.length())
 				+"\r\n\r\n"
-				+agent_data
-				+"\r\n";
+				+agent_data;
 			
 			while (!response200.empty() && (response200[0] == '\r' || response200[0] == '\n')) {
     					response200.erase(0, 1);
@@ -201,8 +199,7 @@ void process_request(int clientsocket,string directory,string request)
 				string response200="HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: "
 					+to_string(file_contents.length())
 					+"\r\n\r\n"
-					+file_contents
-					+"\r\n";
+					+file_contents;
 				
 				while (!response200.empty() && (response200[0] == '\r' || response200[0] == '\n')) {
     					response200.erase(0, 1);
