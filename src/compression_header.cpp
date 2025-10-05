@@ -79,6 +79,9 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 				"Content-Encoding: "+compression_scheme+"\r\n"
 				"Content-Length: "+to_string(buffer.length())
 				+"\r\n\r\n";
+		while (!response.empty() && (response[0] == '\r' || response[0] == '\n')) {
+                                        response.erase(0, 1); 
+                                } 
 		send(clientsocket,response.data(),response.size(),0);
 
 		//Body ko separately bhej rahe hain
@@ -92,6 +95,10 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 				+"\r\n\r\n";
 	
 		cout<<"Nahi mila gzip"<<endl;	
+		
+		while (!response.empty() && (response[0] == '\r' || response[0] == '\n')) {
+                                        response.erase(0, 1); 
+                                } 
 		send(clientsocket,response.data(),response.size(),0);
 
 		
