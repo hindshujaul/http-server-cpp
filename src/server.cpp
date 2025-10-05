@@ -87,11 +87,21 @@ void handle_client(int clientsocket,string directory)
 			//client ne final message ab tak bheja nhi hai 
 			continue;
 		}
+
 		string single_req=request.substr(0,headerEnd+4);
-		cout<<"SINGLE REQ "<<single_req<<endl;
-		process_request(clientsocket,directory,single_req);
-		
-		request.erase(0,headerEnd+4);
+		istringstream iss(single_req);
+		string method,path;
+		iss>method>path;
+		if(method=="POST")
+		{
+			process_request(clientsocket, directory, request);
+			request.clear();
+		}
+		else
+		{
+			process_request(clientsocket,directory,single_req);
+			request.erase(0,headerEnd+4);
+		}
 	}	
 	close(clientsocket);
 }
