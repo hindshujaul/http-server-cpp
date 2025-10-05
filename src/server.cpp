@@ -1,5 +1,6 @@
 #include "common_header.h"
 using namespace std;
+void process_request(int clientsocket,string directory,string single_req)
 bool writeToFile(string &client_str,string &fullpath) 
 {
 	ofstream file(fullpath,ios::binary);
@@ -63,7 +64,7 @@ string find_content_type(string &request)
 	return res;
         
 }
-void handle_client()
+void handle_client(int clientsocket,string directory)
 {
 	
 	char buffer[1024];
@@ -88,13 +89,13 @@ void handle_client()
 		}
 		string single_req=request.substr(0,headerEnd+4);
 
-		process_request(clinetsocket,directory,single_req);
+		process_request(clientsocket,directory,single_req);
 		
 		request.erase(0,headerEnd+4);
 	}	
 	close(clientsocket);
 }
-void process_request(int clientsocket,string directory,string single_req)
+void process_request(int clientsocket,string directory,string request)
 {
 	
    /*Extracting URL Path*/
