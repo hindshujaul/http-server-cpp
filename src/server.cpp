@@ -88,7 +88,7 @@ void handle_client(int clientsocket,string directory)
 			continue;
 		}
 		string single_req=request.substr(0,headerEnd+4);
-
+		cout<<"SINGLE REQ "<<single_req<<endl;
 		process_request(clientsocket,directory,single_req);
 		
 		request.erase(0,headerEnd+4);
