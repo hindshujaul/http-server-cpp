@@ -72,6 +72,7 @@ void handle_client(int clientsocket,string directory)
 	while(1)
 	{ 
 		int received=recv(clientsocket,buffer,sizeof(buffer)-1,0);
+		
 		if(received<=0)
 		{
 			cout<<"Client disconnected"<<endl;
@@ -79,6 +80,9 @@ void handle_client(int clientsocket,string directory)
 		}
 		request.append(buffer,received);
 
+		while (!request.empty() && (request[0] == '\r' || request[0] == '\n')) {
+   				 request.erase(0, 1);
+		}
 		//Headers khojo ab 
 
 		int headerEnd=request.find("\r\n\r\n");
