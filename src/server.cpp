@@ -291,7 +291,7 @@ int main(int argc, char *argv[]) {
   
    std::cout << "Waiting for a client to connect...\n";
   
-   //Directory parser 
+   //Directory parsera 
    string directory=parseDirectory(argc,argv);
    
    if(directory.empty())
