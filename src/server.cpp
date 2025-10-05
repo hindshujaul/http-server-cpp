@@ -195,7 +195,6 @@ void process_request(int clientsocket,string directory,string request)
 			int start=spos+to_find_file.length();
 			int end=request.length();
 			string client_str=request.substr(start,end-start);
-//			cout<<"First char"<<start<<endl;
 //			cout<<"last char"<<request[end]<<endl;
 	
 	//		cout<<"CLIENT STR"<<client_str<<endl;
