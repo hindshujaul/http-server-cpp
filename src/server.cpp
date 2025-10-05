@@ -63,27 +63,41 @@ string find_content_type(string &request)
 	return res;
         
 }
-void handle_client(int clientsocket,string directory)
+void handle_client()
 {
 	
-   /*Extracting URL Path*/
-
 	char buffer[1024];
+	string request;
 	while(1)
 	{ 
 		int received=recv(clientsocket,buffer,sizeof(buffer)-1,0);
-		string request;
-		if(received>0)
-		{
-			buffer[received]='\0';
-			request=string(buffer);
-		}
-		else if(received<=0)
+		if(received<=0)
 		{
 			cout<<"Client disconnected"<<endl;
 			break;
-		}	
+		}
+		request.append(buffer,received);
 
+		//Headers khojo ab 
+
+		int headerEnd=request.find("\r\n\r\n");
+		if(headerEnd == string::npos)
+		{
+			//client ne final message ab tak bheja nhi hai 
+			continue;
+		}
+		string single_req=request.substr(0,headerEnd+4);
+
+		process_request(clinetsocket,directory,single_req);
+		
+		request.erase(0,headerEnd+4);
+	}	
+	close(clientsocket);
+}
+void process_request(int clientsocket,string directory,string single_req)
+{
+	
+   /*Extracting URL Path*/
 		/* For Response 200 */	
 		istringstream iss (request);
 		string method,path,version,header;
@@ -198,7 +212,6 @@ void handle_client(int clientsocket,string directory)
 		}			
 		else
 			send(clientsocket,response404.data(),response404.size(),0);
-	}
 }
 int main(int argc, char *argv[]) {
   // Flush after every std::cout / std::cerr
