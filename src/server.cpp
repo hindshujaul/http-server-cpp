@@ -240,6 +240,7 @@ int main(int argc, char *argv[]) {
    while(1)
    {
 	   	
+	int clientsocket=accept(server_fd, (struct sockaddr *) &client_addr, (socklen_t *) &client_addr_len);
    	int received=recv(clientsocket,buffer,sizeof(buffer)-1,0);
    	string request;
 
@@ -253,7 +254,6 @@ int main(int argc, char *argv[]) {
 		cout<<"Client disconnected"<<endl;
 		break;
 	}	
-	   int clientsocket=accept(server_fd, (struct sockaddr *) &client_addr, (socklen_t *) &client_addr_len);
 
 
 	   cout<<"Client Connected\n"<<endl;	
