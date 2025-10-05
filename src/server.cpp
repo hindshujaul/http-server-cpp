@@ -63,127 +63,142 @@ string find_content_type(string &request)
 	return res;
         
 }
-void handle_client(int clientsocket,string directory,string request)
+void handle_client(int clientsocket,string directory)
 {
 	
    /*Extracting URL Path*/
-     
- 
-   /* For Response 200 */	
-   istringstream iss (request);
-   string method,path,version,header;
-   iss>>method>>path>>version>>header; /* this has data from stream*/
-	
-   /* finding /echo/ */  
-   string echo_find="/echo/";
-   int apos=request.find(echo_find);
-   int incoming_data=apos+echo_find.length();
-   string http_find="HTTP";
-   int epos=request.find(http_find);   
-   string desired_string(request.begin()+incoming_data,request.begin()+epos-1); //isko substr se bhi try krna hai 
-   
-   /*For user-agent content*/
-   string agent_find="User-Agent:";
-   int pos=request.find(agent_find);
-   int agent_start_pos=pos+agent_find.length()+1;
-   int agent_end_pos=request.find('\r',agent_start_pos);
-   string agent_data=request.substr(agent_start_pos,agent_end_pos-agent_start_pos);   
 
-   string response404="HTTP/1.1 404 Not Found\r\n\r\n";
-   cout<<path<<endl;
-   
-   /*function to find content type*/
-   string content_type=find_content_type(request);
-   int content_length=content_type.length();
-   if(path.find("/echo/")==0)
-   {
-	
-	string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
-                           +to_string(desired_string.length())
-			   +"\r\n\r\n"
-			   +desired_string
-		           +"\r\n";
-	
-	if(request.find("Accept-Encoding")!=string::npos)
-		header_compress(clientsocket,header,path,request);		
-        send(clientsocket,response200.data(),response200.size(),0);
-   }
-   else if(path=="/")
-   {
-	string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n";
-	send(clientsocket,response200.data(),response200.size(),0);
-   }	
-   else if(path=="/user-agent")
-   {
-	string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
-			    +to_string(agent_data.length())
-			    +"\r\n\r\n"
-			    +agent_data
-			    +"\r\n";
-       send(clientsocket,response200.data(),response200.size(),0);
-   
-   }
-   else if(method=="GET"&& path.find("/files/")==0)
-   {
-		//extracting filename
-		string to_find="/files/";
-                string filename=extractfilename(request,to_find);
-                string fullpath=directory+filename;
-		cout<<"FILENAME"<<filename<<endl;
-		cout<<"FULLPATH"<<fullpath<<endl;
-		ifstream file(fullpath,ios::binary);
-		if(file.good())
+	char buffer[1024];
+	while(1)
+	{ 
+		int received=recv(clientsocket,buffer,sizeof(buffer)-1,0);
+		string request;
+		if(received>0)
 		{
-			stringstream buff_s;
-			buff_s << file.rdbuf();
- 			string file_contents=buff_s.str();
-			
-		string response200="HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: "
-				  +to_string(file_contents.length())
-				  +"\r\n\r\n"
-				  +file_contents
-				  +"\r\n";
-		send(clientsocket,response200.data(),response200.size(),0);	
+			buffer[received]='\0';
+			request=string(buffer);
 		}
-		else
+		else if(received<=0)
 		{
-			string response404="HTTP/1.1 404 Not Found\r\n\r\n";
-			send(clientsocket,response404.data(),response404.size(),0);
-		}
-                 
-   }
-   else if(method=="POST" && path.find("/files/")==0)
-   {
-		string to_find="/files/";
-                string filename=extractfilename(request,to_find);
-                string fullpath=directory+filename;
-		cout<<"FILENAME"<<filename<<endl;
-		cout<<"FULLPATH"<<fullpath<<endl;
-	        //extracting data to write 
-		string to_find_file="\r\n\r\n";
-   		int spos=request.rfind(to_find_file);
-		int start=spos+to_find_file.length();
-		int end=request.length();
-		string client_str=request.substr(start,end-start);
-		//Write to file
-		if(writeToFile(client_str,fullpath))
-		{
-			cout<<"File write done"<<endl;
-			string response201="HTTP/1.1 201 Created\r\n\r\n";
-			send(clientsocket,response201.data(),response201.size(),0);
-		}
-		else
-		{
-			cout<<"Falied to write to file"<<endl;
+			cout<<"Client disconnected"<<endl;
+			break;
 		}	
-   }
-   else if(method =="GET" && header.find("gzip"))
-   {
-	header_compress(clientsocket,header,path,request);		
-   }			
-   else
-	send(clientsocket,response404.data(),response404.size(),0);
- 	 
+
+		/* For Response 200 */	
+		istringstream iss (request);
+		string method,path,version,header;
+		iss>>method>>path>>version>>header; /* this has data from stream*/
+
+		/* finding /echo/ */  
+		string echo_find="/echo/";
+		int apos=request.find(echo_find);
+		int incoming_data=apos+echo_find.length();
+		string http_find="HTTP";
+		int epos=request.find(http_find);   
+		string desired_string(request.begin()+incoming_data,request.begin()+epos-1); //isko substr se bhi try krna hai 
+
+		/*For user-agent content*/
+		string agent_find="User-Agent:";
+		int pos=request.find(agent_find);
+		int agent_start_pos=pos+agent_find.length()+1;
+		int agent_end_pos=request.find('\r',agent_start_pos);
+		string agent_data=request.substr(agent_start_pos,agent_end_pos-agent_start_pos);   
+
+		string response404="HTTP/1.1 404 Not Found\r\n\r\n";
+		cout<<path<<endl;
+
+		/*function to find content type*/
+		string content_type=find_content_type(request);
+		int content_length=content_type.length();
+		if(path.find("/echo/")==0)
+		{
+
+			string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
+				+to_string(desired_string.length())
+				+"\r\n\r\n"
+				+desired_string
+				+"\r\n";
+
+			if(request.find("Accept-Encoding")!=string::npos)
+				header_compress(clientsocket,header,path,request);		
+			send(clientsocket,response200.data(),response200.size(),0);
+		}
+		else if(path=="/")
+		{
+			string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n";
+			send(clientsocket,response200.data(),response200.size(),0);
+		}	
+		else if(path=="/user-agent")
+		{
+			string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
+				+to_string(agent_data.length())
+				+"\r\n\r\n"
+				+agent_data
+				+"\r\n";
+			send(clientsocket,response200.data(),response200.size(),0);
+
+		}
+		else if(method=="GET"&& path.find("/files/")==0)
+		{
+			//extracting filename
+			string to_find="/files/";
+			string filename=extractfilename(request,to_find);
+			string fullpath=directory+filename;
+			cout<<"FILENAME"<<filename<<endl;
+			cout<<"FULLPATH"<<fullpath<<endl;
+			ifstream file(fullpath,ios::binary);
+			if(file.good())
+			{
+				stringstream buff_s;
+				buff_s << file.rdbuf();
+				string file_contents=buff_s.str();
+
+				string response200="HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: "
+					+to_string(file_contents.length())
+					+"\r\n\r\n"
+					+file_contents
+					+"\r\n";
+				send(clientsocket,response200.data(),response200.size(),0);	
+			}
+			else
+			{
+				string response404="HTTP/1.1 404 Not Found\r\n\r\n";
+				send(clientsocket,response404.data(),response404.size(),0);
+			}
+
+		}
+		else if(method=="POST" && path.find("/files/")==0)
+		{
+			string to_find="/files/";
+			string filename=extractfilename(request,to_find);
+			string fullpath=directory+filename;
+			cout<<"FILENAME"<<filename<<endl;
+			cout<<"FULLPATH"<<fullpath<<endl;
+			//extracting data to write 
+			string to_find_file="\r\n\r\n";
+			int spos=request.rfind(to_find_file);
+			int start=spos+to_find_file.length();
+			int end=request.length();
+			string client_str=request.substr(start,end-start);
+			//Write to file
+			if(writeToFile(client_str,fullpath))
+			{
+				cout<<"File write done"<<endl;
+				string response201="HTTP/1.1 201 Created\r\n\r\n";
+				send(clientsocket,response201.data(),response201.size(),0);
+			}
+			else
+			{
+				cout<<"Falied to write to file"<<endl;
+			}	
+		}
+		else if(method =="GET" && header.find("gzip"))
+		{
+			header_compress(clientsocket,header,path,request);		
+		}			
+		else
+			send(clientsocket,response404.data(),response404.size(),0);
+	}
 }
 int main(int argc, char *argv[]) {
   // Flush after every std::cout / std::cerr
@@ -236,28 +251,14 @@ int main(int argc, char *argv[]) {
    {
 	cout<<"directory:-"<<directory<<endl;
    }
-   char buffer[1024];
    while(1)
    {
 	   	
 	int clientsocket=accept(server_fd, (struct sockaddr *) &client_addr, (socklen_t *) &client_addr_len);
-   	int received=recv(clientsocket,buffer,sizeof(buffer)-1,0);
-   	string request;
-
-   	if(received>0)
-   	{
-		buffer[received]='\0';
-		request=string(buffer);
-   	}
-	else if(received<=0)
-	{
-		cout<<"Client disconnected"<<endl;
-		break;
-	}	
 
 
 	   cout<<"Client Connected\n"<<endl;	
-	   thread t(handle_client,clientsocket,directory,request); //can be done like thread (handle_client,clientsocket).detach();
+	   thread t(handle_client,clientsocket,directory); //can be done like thread (handle_client,clientsocket).detach();
            t.detach();
    }
    close(server_fd);
