@@ -91,7 +91,7 @@ void handle_client(int clientsocket,string directory)
 		string single_req=request.substr(0,headerEnd+4);
 		istringstream iss(single_req);
 		string method,path;
-		iss>method>path;
+		iss>>method>>path;
 		if(method=="POST")
 		{
 			process_request(clientsocket, directory, request);
