@@ -99,6 +99,9 @@ void handle_client(int clientsocket,string directory)
 		}
 		else
 		{
+			while (!request.empty() && (request[0] == '\r' || Buffer[0] == '\n')) {
+   					 requestBuffer.erase(0, 1);
+}
 			process_request(clientsocket,directory,single_req);
 			request.erase(0,single_req.size());
 		}
