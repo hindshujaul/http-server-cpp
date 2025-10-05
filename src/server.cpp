@@ -1,6 +1,6 @@
 #include "common_header.h"
 using namespace std;
-void process_request(int clientsocket,string directory,string single_req)
+void process_request(int clientsocket,string directory,string single_req);
 bool writeToFile(string &client_str,string &fullpath) 
 {
 	ofstream file(fullpath,ios::binary);
