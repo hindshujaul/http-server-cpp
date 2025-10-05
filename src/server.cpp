@@ -63,7 +63,7 @@ string find_content_type(string &request)
 	return res;
         
 }
-void handle_client(int clientsocket,string directory,string &request)
+void handle_client(int clientsocket,string directory,string request)
 {
 	
    /*Extracting URL Path*/
@@ -263,4 +263,4 @@ int main(int argc, char *argv[]) {
    close(server_fd);
 
   return 0;
-}
+td::
