@@ -99,9 +99,6 @@ void handle_client(int clientsocket,string directory)
 		}
 		else
 		{
-			while (!single_req.empty() && (single_req[0] == '\r' || single_req[0] == '\n')) {
-   					 single_req.erase(0, 1);
-			}
 			cout<<"SingleREQ "<<single_req<<endl;
 			process_request(clientsocket,directory,single_req);
 			request.erase(0,single_req.size());
