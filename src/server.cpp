@@ -149,12 +149,20 @@ void process_request(int clientsocket,string directory,string request)
 				+"\r\n";
 
 			if(request.find("Accept-Encoding")!=string::npos)
-				header_compress(clientsocket,header,path,request);		
+				header_compress(clientsocket,header,path,request);	
+			while (!response200.empty() && (response200[0] == '\r' || response200[0] == '\n')) {
+    					response200.erase(0, 1);
+				}
+	
 			send(clientsocket,response200.data(),response200.size(),0);
 		}
 		else if(path=="/")
 		{
 			string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n";
+			
+			while (!response200.empty() && (response200[0] == '\r' || response200[0] == '\n')) {
+    					response200.erase(0, 1);
+				}
 			send(clientsocket,response200.data(),response200.size(),0);
 		}	
 		else if(path=="/user-agent")
@@ -164,6 +172,10 @@ void process_request(int clientsocket,string directory,string request)
 				+"\r\n\r\n"
 				+agent_data
 				+"\r\n";
+			
+			while (!response200.empty() && (response200[0] == '\r' || response200[0] == '\n')) {
+    					response200.erase(0, 1);
+				}
 			send(clientsocket,response200.data(),response200.size(),0);
 
 		}
@@ -187,6 +199,10 @@ void process_request(int clientsocket,string directory,string request)
 					+"\r\n\r\n"
 					+file_contents
 					+"\r\n";
+				
+				while (!response200.empty() && (response200[0] == '\r' || response200[0] == '\n')) {
+    					response200.erase(0, 1);
+				}
 				send(clientsocket,response200.data(),response200.size(),0);	
 			}
 			else
@@ -217,6 +233,10 @@ void process_request(int clientsocket,string directory,string request)
 			{
 				cout<<"File write done"<<endl;
 				string response201="HTTP/1.1 201 Created\r\n\r\n";
+				
+				while (!response201.empty() && (response201[0] == '\r' || response201[0] == '\n')) {
+    					response201.erase(0, 1);
+				}
 				send(clientsocket,response201.data(),response201.size(),0);
 			}
 			else
