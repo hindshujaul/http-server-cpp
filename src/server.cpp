@@ -63,19 +63,10 @@ string find_content_type(string &request)
 	return res;
         
 }
-void handle_client(int clientsocket,string directory)
+void handle_client(int clientsocket,string directory,string &request)
 {
 	
    /*Extracting URL Path*/
-   char buffer[1024];
-   int received=recv(clientsocket,buffer,sizeof(buffer)-1,0);
-   string request;
-
-   if(received>0)
-   {
-	buffer[received]='\0';
-	request=string(buffer);
-   }	
      
  
    /* For Response 200 */	
@@ -245,13 +236,28 @@ int main(int argc, char *argv[]) {
    {
 	cout<<"directory:-"<<directory<<endl;
    }
+   char buffer[1024];
    while(1)
-   {	
+   {
+	   	
+   	int received=recv(clientsocket,buffer,sizeof(buffer)-1,0);
+   	string request;
+
+   	if(received>0)
+   	{
+		buffer[received]='\0';
+		request=string(buffer);
+   	}
+	else if(received<=0)
+	{
+		cout<<"Client disconnected"<<endl;
+		break;
+	}	
 	   int clientsocket=accept(server_fd, (struct sockaddr *) &client_addr, (socklen_t *) &client_addr_len);
 
 
 	   cout<<"Client Connected\n"<<endl;	
-	   thread t(handle_client,clientsocket,directory); //can be done like thread (handle_client,clientsocket).detach();
+	   thread t(handle_client,clientsocket,directory,request); //can be done like thread (handle_client,clientsocket).detach();
            t.detach();
    }
    close(server_fd);
