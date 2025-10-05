@@ -100,7 +100,7 @@ void handle_client(int clientsocket,string directory)
 		else
 		{
 			process_request(clientsocket,directory,single_req);
-			request.erase(0,headerEnd+4);
+			request.erase(0,single_req.size());
 		}
 	}	
 	close(clientsocket);
