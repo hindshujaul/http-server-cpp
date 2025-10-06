@@ -210,6 +210,8 @@ void process_request(int clientsocket,string directory,string request)
 				+to_string(agent_data.length())
 				+"\r\n\r\n"
 				+agent_data;
+		
+			send(clientsocket,response200.data(),response200.size(),0);
 			}
 			else if(request.find("Connection: close")!=string::npos)
 			{
@@ -220,13 +222,14 @@ void process_request(int clientsocket,string directory,string request)
 				+"Connection: close\r\n\r\n";
 				
 				close(clientsocket);
+				
+			send(clientsocket,response200.data(),response200.size(),0);
 			}
 
 			
 			while (!response200.empty() && (response200[0] == '\r' || response200[0] == '\n')) {
     					response200.erase(0, 1);
 				}
-			send(clientsocket,response200.data(),response200.size(),0);
 			
 		}
 
