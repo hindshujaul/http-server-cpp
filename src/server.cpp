@@ -177,10 +177,9 @@ void process_request(int clientsocket,string directory,string request)
 			
 			if(request.find("Connection: close")!=string::npos)
 			{
-				close(clientsocket);
-					
 				string response_close="Connection: close\r\n";
 				send(clientsocket,response_close.data(),response_close.size(),0);
+				close(clientsocket);
 			}
 		}	
 		else if(path=="/user-agent")
@@ -197,11 +196,9 @@ void process_request(int clientsocket,string directory,string request)
 			
 			if(request.find("Connection: close")!=string::npos)
 			{
-				close(clientsocket);	
-				
 				string response_close="Connection: close\r\n";
 				send(clientsocket,response_close.data(),response_close.size(),0);
-				
+				close(clientsocket);	
 				
 			}
 
@@ -233,9 +230,9 @@ void process_request(int clientsocket,string directory,string request)
 					
 			if(request.find("Connection: close")!=string::npos)
 			{
-				close(clientsocket);
 				string response_close="Connection: close\r\n";
 				send(clientsocket,response_close.data(),response_close.size(),0);
+				close(clientsocket);
 			}	
 			}
 			else
@@ -274,9 +271,9 @@ void process_request(int clientsocket,string directory,string request)
 				
 			if(request.find("Connection: close")!=string::npos)
 			{
-				close(clientsocket);
 				string response_close="Connection: close\r\n";
 				send(clientsocket,response_close.data(),response_close.size(),0);
+				close(clientsocket);
 			}
 			}
 			else
