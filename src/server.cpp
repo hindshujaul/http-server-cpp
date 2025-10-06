@@ -83,7 +83,7 @@ void handle_client(int clientsocket,string directory)
 		while (!request.empty() && (request[0] == '\r' || request[0] == '\n')) {
    				 request.erase(0, 1);
 		}
-		//Headers khojo ab 
+		//Headers khojo aab 
 
 		int headerEnd=request.find("\r\n\r\n");
 		if(headerEnd == string::npos)
