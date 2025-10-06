@@ -146,10 +146,22 @@ void process_request(int clientsocket,string directory,string request)
 		if(path.find("/echo/")==0)
 		{
 
-			string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
+			string response200;
+			if(request.find("Connection: close")==string::npos)
+			{
+				response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
 				+to_string(desired_string.length())
 				+"\r\n\r\n"
 				+desired_string;
+			}
+			else if(request.find("Connection: close")!=string::npos)
+			{
+				response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
+				+to_string(desired_string.length())
+				+"\r\n\r\n"
+				+desired_string
+				+"Connection: close\r\n\r\n";
+			}
 
 			if(request.find("Accept-Encoding")!=string::npos)
 				header_compress(clientsocket,header,path,request);	
@@ -161,7 +173,17 @@ void process_request(int clientsocket,string directory,string request)
 		}
 		else if(path=="/")
 		{
-			string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n";
+			string response200;
+			
+			if(request.find("Connection: close")==string::npos)
+			{
+				response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n";
+			}
+			else if(request.find("Connection: close")!=string::npos)
+			{
+				response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain"
+					    +"Connection: close\r\n\r\n";
+			}
 			
 			while (!response200.empty() && (response200[0] == '\r' || response200[0] == '\n')) {
     					response200.erase(0, 1);
@@ -171,10 +193,24 @@ void process_request(int clientsocket,string directory,string request)
 		}	
 		else if(path=="/user-agent")
 		{
-			string response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
+			string response200;
+			
+			if(request.find("Connection: close")==string::npos)
+			{
+				response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
 				+to_string(agent_data.length())
 				+"\r\n\r\n"
 				+agent_data;
+			}
+			else if(request.find("Connection: close")!=string::npos)
+			{
+				response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
+				+to_string(agent_data.length())
+				+"\r\n\r\n"
+				+agent_data
+				+"Connection: close\r\n\r\n";
+			}
+
 			
 			while (!response200.empty() && (response200[0] == '\r' || response200[0] == '\n')) {
     					response200.erase(0, 1);
