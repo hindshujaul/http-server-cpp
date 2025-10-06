@@ -162,6 +162,7 @@ void process_request(int clientsocket,string directory,string request)
 				+to_string(desired_string.length())
 				+"\r\n\r\n"
 				+desired_string;
+				close(clientsocket);
 			}
 
 			if(request.find("Accept-Encoding")!=string::npos)
@@ -184,6 +185,8 @@ void process_request(int clientsocket,string directory,string request)
 			{
 				response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n"
 					    "Connection: close\r\n\r\n";
+				
+				close(clientsocket);
 			}
 			
 			while (!response200.empty() && (response200[0] == '\r' || response200[0] == '\n')) {
