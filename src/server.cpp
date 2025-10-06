@@ -111,7 +111,7 @@ void handle_client(int clientsocket,string directory)
 			request.erase(0,single_req.size());
 		}
 	}	
-	close(clientsocket);
+//	close(clientsocket);
 }
 void process_request(int clientsocket,string directory,string request)
 {
@@ -158,13 +158,6 @@ void process_request(int clientsocket,string directory,string request)
 				}
 			send(clientsocket,response200.data(),response200.size(),0);
 			
-			if(request.find("Connection: close")!=string::npos)
-			{
-					
-				string response_close="Connection: close\r\n\r\n";
-				send(clientsocket,response_close.data(),response_close.size(),0);
-				close(clientsocket);
-			}
 		}
 		else if(path=="/")
 		{
@@ -175,12 +168,6 @@ void process_request(int clientsocket,string directory,string request)
 				}
 			send(clientsocket,response200.data(),response200.size(),0);
 			
-			if(request.find("Connection: close")!=string::npos)
-			{
-				string response_close="Connection: close\r\n\r\n";
-				send(clientsocket,response_close.data(),response_close.size(),0);
-				close(clientsocket);
-			}
 		}	
 		else if(path=="/user-agent")
 		{
@@ -194,15 +181,8 @@ void process_request(int clientsocket,string directory,string request)
 				}
 			send(clientsocket,response200.data(),response200.size(),0);
 			
-			if(request.find("Connection: close")!=string::npos)
-			{
-				string response_close="Connection: close\r\n\r\n";
-				send(clientsocket,response_close.data(),response_close.size(),0);
-				close(clientsocket);	
-				
-			}
-
 		}
+
 		else if(method=="GET"&& path.find("/files/")==0)
 		{
 			//extracting filename
@@ -228,12 +208,6 @@ void process_request(int clientsocket,string directory,string request)
 				}
 				send(clientsocket,response200.data(),response200.size(),0);
 					
-			if(request.find("Connection: close")!=string::npos)
-			{
-				string response_close="Connection: close\r\n\r\n";
-				send(clientsocket,response_close.data(),response_close.size(),0);
-				close(clientsocket);
-			}	
 			}
 			else
 			{
@@ -269,12 +243,6 @@ void process_request(int clientsocket,string directory,string request)
 				}
 				send(clientsocket,response201.data(),response201.size(),0);
 				
-			if(request.find("Connection: close")!=string::npos)
-			{
-				string response_close="Connection: close\r\n\r\n";
-				send(clientsocket,response_close.data(),response_close.size(),0);
-				close(clientsocket);
-			}
 			}
 			else
 			{
