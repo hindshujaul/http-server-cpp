@@ -84,7 +84,7 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 				"Connection: close\r\n"
 				+"\r\n\r\n";
 		
-			cout<<YAHA HU MAI"<<endl;	
+			cout<<"YAHA HU MAI"<<endl;	
 			send(clientsocket,response.data(),response.size(),0);
 		        send(clientsocket,buffer.data(),buffer.size(),0);
 			close(clientsocket);
