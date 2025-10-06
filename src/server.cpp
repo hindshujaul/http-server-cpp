@@ -219,7 +219,7 @@ void process_request(int clientsocket,string directory,string request)
 				+to_string(agent_data.length())
 				+"Connection: close\r\n";
 				+"\r\n"
-				+agent_data
+				+agent_data;
 				
 				close(clientsocket);
 				
