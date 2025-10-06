@@ -187,17 +187,18 @@ void process_request(int clientsocket,string directory,string request)
 				response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n"
 					    "Connection: close\r\n\r\n";
 				
+				send(clientsocket,response200.data(),response200.size(),0);
 				close(clientsocket);
 			}
 			else if(request.find("Connection: close")==string::npos)
 			{
 				response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n";
+				send(clientsocket,response200.data(),response200.size(),0);
 			}
 			
 			while (!response200.empty() && (response200[0] == '\r' || response200[0] == '\n')) {
     					response200.erase(0, 1);
 				}
-			send(clientsocket,response200.data(),response200.size(),0);
 			
 		}	
 		else if(path=="/user-agent")
