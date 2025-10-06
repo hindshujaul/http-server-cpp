@@ -146,6 +146,12 @@ void process_request(int clientsocket,string directory,string request)
 		if(path.find("/echo/")==0)
 		{
 
+			
+			if(request.find("Accept-Encoding: gzip")!=string::npos)
+			{
+				header_compress(clientsocket,header,path,request);
+				return;	
+			}
 			string response200;
 			if(request.find("Connection: close")!=string::npos)
 			{
@@ -171,11 +177,6 @@ void process_request(int clientsocket,string directory,string request)
 			send(clientsocket,response200.data(),response200.size(),0);
 			}
 
-			if(request.find("Accept-Encoding: gzip")!=string::npos)
-			{
-				header_compress(clientsocket,header,path,request);
-				return;	
-			}
 			while (!response200.empty() && (response200[0] == '\r' || response200[0] == '\n')) {
     					response200.erase(0, 1);
 				}
