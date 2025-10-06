@@ -150,12 +150,14 @@ void process_request(int clientsocket,string directory,string request)
 			if(request.find("Connection: close")!=string::npos)
 			{
 				cout<<"WE ARE IN CONN CLOSE"<<endl;
-				response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
-				+to_string(desired_string.length())+"\r\n"
-				+"Connection: close\r\n";
-				+"\r\n"
-				+desired_string;
-				
+				response200 =
+    					"HTTP/1.1 200 OK\r\n"
+    					"Content-Type: text/plain\r\n"
+    					"Content-Length: " + to_string(desired_string.length()) + "\r\n"
+   				        "Connection: close\r\n"   // header ends with CRLF
+    					"\r\n"                    // blank line marks end of headers
+    					+ desired_string;         // body
+
 			send(clientsocket,response200.data(),response200.size(),0);
 			close(clientsocket);
 			}
