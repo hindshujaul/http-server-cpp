@@ -74,18 +74,37 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 		buffer.resize(compressed_size);
 	
 	
-		string response="HTTP/1.1 200 OK\r\n"
+		string response;
+		if(request.find("Connection: close")!=string::npos)
+		{
+		       response="HTTP/1.1 200 OK\r\n"
+				"Content-Type: text/plain\r\n"
+				"Content-Encoding: "+compression_scheme+"\r\n"
+				"Content-Length: "+to_string(buffer.length())
+				"Connection: close\r\n"
+				+"\r\n\r\n";
+			
+			send(clientsocket,response.data(),response.size(),0);
+		        send(clientsocket,buffer.data(),buffer.size(),0);
+			close(clientsocket);
+		}
+		else if(request.find("Connection: close")==string::npos)
+		{
+			
+		       response="HTTP/1.1 200 OK\r\n"
 				"Content-Type: text/plain\r\n"
 				"Content-Encoding: "+compression_scheme+"\r\n"
 				"Content-Length: "+to_string(buffer.length())
 				+"\r\n\r\n";
+		
+		         send(clientsocket,response.data(),response.size(),0);
+		         send(clientsocket,buffer.data(),buffer.size(),0);
+		}
 		while (!response.empty() && (response[0] == '\r' || response[0] == '\n')) {
                                         response.erase(0, 1); 
                                 } 
-		send(clientsocket,response.data(),response.size(),0);
 
 		//Body ko separately bhej rahe hain
-		send(clientsocket,buffer.data(),buffer.size(),0);
 	}
 	else
 	{	
