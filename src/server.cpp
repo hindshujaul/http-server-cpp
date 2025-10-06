@@ -155,6 +155,9 @@ void process_request(int clientsocket,string directory,string request)
 				+"\r\n\r\n"
 				+desired_string
 				+"Connection: close\r\n\r\n";
+				
+			send(clientsocket,response200.data(),response200.size(),0);
+			close(clientsocket);
 			}
 			else if(request.find("Connection: close")==string::npos)
 			{
@@ -162,7 +165,8 @@ void process_request(int clientsocket,string directory,string request)
 				+to_string(desired_string.length())
 				+"\r\n\r\n"
 				+desired_string;
-				close(clientsocket);
+
+			send(clientsocket,response200.data(),response200.size(),0);
 			}
 
 			if(request.find("Accept-Encoding")!=string::npos)
@@ -170,7 +174,6 @@ void process_request(int clientsocket,string directory,string request)
 			while (!response200.empty() && (response200[0] == '\r' || response200[0] == '\n')) {
     					response200.erase(0, 1);
 				}
-			send(clientsocket,response200.data(),response200.size(),0);
 			
 		}
 		else if(path=="/")
