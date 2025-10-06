@@ -171,7 +171,7 @@ void process_request(int clientsocket,string directory,string request)
 			send(clientsocket,response200.data(),response200.size(),0);
 			}
 
-			if(request.find("Accept-Encoding")!=string::npos)
+			if(request.find("Accept-Encoding: gzip")!=string::npos)
 			{
 				header_compress(clientsocket,header,path,request);
 				return;	
