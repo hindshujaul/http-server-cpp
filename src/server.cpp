@@ -111,7 +111,7 @@ void handle_client(int clientsocket,string directory)
 			request.erase(0,single_req.size());
 		}
 	}	
-	close(clientsocket);
+//	close(clientsocket);
 }
 void process_request(int clientsocket,string directory,string request)
 {
