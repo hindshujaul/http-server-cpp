@@ -152,8 +152,8 @@ void process_request(int clientsocket,string directory,string request)
 				cout<<"WE ARE IN CONNN CLOSE"<<endl;
 				response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
 				+to_string(desired_string.length())+"\r\n"
-				+"Connection: close";
-				+"\r\n\r\n"
+				+"Connection: close\r\n";
+				+"\r\n"
 				+desired_string;
 				
 			send(clientsocket,response200.data(),response200.size(),0);
