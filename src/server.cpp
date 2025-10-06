@@ -177,16 +177,16 @@ void process_request(int clientsocket,string directory,string request)
 		{
 			string response200;
 			
-			if(request.find("Connection: close")==string::npos)
-			{
-				response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n";
-			}
-			else if(request.find("Connection: close")!=string::npos)
+			if(request.find("Connection: close")!=string::npos)
 			{
 				response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n"
 					    "Connection: close\r\n\r\n";
 				
 				close(clientsocket);
+			}
+			else if(request.find("Connection: close")==string::npos)
+			{
+				response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n";
 			}
 			
 			while (!response200.empty() && (response200[0] == '\r' || response200[0] == '\n')) {
@@ -213,6 +213,8 @@ void process_request(int clientsocket,string directory,string request)
 				+"\r\n\r\n"
 				+agent_data
 				+"Connection: close\r\n\r\n";
+				
+				close(clientsocket);
 			}
 
 			
