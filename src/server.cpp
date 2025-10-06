@@ -161,7 +161,7 @@ void process_request(int clientsocket,string directory,string request)
 			if(request.find("Connection: close")!=string::npos)
 			{
 					
-				string response_close="Connection: close\r\n";
+				string response_close="Connection: close\r\n\r\n";
 				send(clientsocket,response_close.data(),response_close.size(),0);
 				close(clientsocket);
 			}
@@ -177,7 +177,7 @@ void process_request(int clientsocket,string directory,string request)
 			
 			if(request.find("Connection: close")!=string::npos)
 			{
-				string response_close="Connection: close\r\n";
+				string response_close="Connection: close\r\n\r\n";
 				send(clientsocket,response_close.data(),response_close.size(),0);
 				close(clientsocket);
 			}
@@ -196,7 +196,7 @@ void process_request(int clientsocket,string directory,string request)
 			
 			if(request.find("Connection: close")!=string::npos)
 			{
-				string response_close="Connection: close\r\n";
+				string response_close="Connection: close\r\n\r\n";
 				send(clientsocket,response_close.data(),response_close.size(),0);
 				close(clientsocket);	
 				
@@ -230,7 +230,7 @@ void process_request(int clientsocket,string directory,string request)
 					
 			if(request.find("Connection: close")!=string::npos)
 			{
-				string response_close="Connection: close\r\n";
+				string response_close="Connection: close\r\n\r\n";
 				send(clientsocket,response_close.data(),response_close.size(),0);
 				close(clientsocket);
 			}	
@@ -271,7 +271,7 @@ void process_request(int clientsocket,string directory,string request)
 				
 			if(request.find("Connection: close")!=string::npos)
 			{
-				string response_close="Connection: close\r\n";
+				string response_close="Connection: close\r\n\r\n";
 				send(clientsocket,response_close.data(),response_close.size(),0);
 				close(clientsocket);
 			}
