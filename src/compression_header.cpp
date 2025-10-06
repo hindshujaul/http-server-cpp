@@ -80,7 +80,7 @@ void header_compress(int &clientsocket,string &header,string &path,string &reque
 		       response="HTTP/1.1 200 OK\r\n"
 				"Content-Type: text/plain\r\n"
 				"Content-Encoding: "+compression_scheme+"\r\n"
-				"Content-Length: "+to_string(buffer.length())
+				"Content-Length: "+to_string(buffer.length())+
 				"Connection: close\r\n"
 				+"\r\n\r\n";
 			
