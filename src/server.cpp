@@ -147,20 +147,21 @@ void process_request(int clientsocket,string directory,string request)
 		{
 
 			string response200;
-			if(request.find("Connection: close")==string::npos)
+			if(request.find("Connection: close")!=string::npos)
 			{
-				response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
-				+to_string(desired_string.length())
-				+"\r\n\r\n"
-				+desired_string;
-			}
-			else if(request.find("Connection: close")!=string::npos)
-			{
+				cout<<"WE ARE IN CONN CLOSE"<<endl;
 				response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
 				+to_string(desired_string.length())
 				+"\r\n\r\n"
 				+desired_string
 				+"Connection: close\r\n\r\n";
+			}
+			else if(request.find("Connection: close")==string::npos)
+			{
+				response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
+				+to_string(desired_string.length())
+				+"\r\n\r\n"
+				+desired_string;
 			}
 
 			if(request.find("Accept-Encoding")!=string::npos)
