@@ -172,7 +172,10 @@ void process_request(int clientsocket,string directory,string request)
 			}
 
 			if(request.find("Accept-Encoding")!=string::npos)
-				header_compress(clientsocket,header,path,request);	
+			{
+				header_compress(clientsocket,header,path,request);
+				return;	
+			}
 			while (!response200.empty() && (response200[0] == '\r' || response200[0] == '\n')) {
     					response200.erase(0, 1);
 				}
