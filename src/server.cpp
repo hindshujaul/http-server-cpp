@@ -156,8 +156,10 @@ void process_request(int clientsocket,string directory,string request)
 			while (!response200.empty() && (response200[0] == '\r' || response200[0] == '\n')) {
     					response200.erase(0, 1);
 				}
-	
 			send(clientsocket,response200.data(),response200.size(),0);
+			
+			if(request.find("Connection: close")!=string::npos)
+				close(clientsocket);	
 		}
 		else if(path=="/")
 		{
@@ -167,6 +169,9 @@ void process_request(int clientsocket,string directory,string request)
     					response200.erase(0, 1);
 				}
 			send(clientsocket,response200.data(),response200.size(),0);
+			
+			if(request.find("Connection: close")!=string::npos)
+				close(clientsocket);	
 		}	
 		else if(path=="/user-agent")
 		{
@@ -179,6 +184,9 @@ void process_request(int clientsocket,string directory,string request)
     					response200.erase(0, 1);
 				}
 			send(clientsocket,response200.data(),response200.size(),0);
+			
+			if(request.find("Connection: close")!=string::npos)
+				close(clientsocket);	
 
 		}
 		else if(method=="GET"&& path.find("/files/")==0)
@@ -204,7 +212,10 @@ void process_request(int clientsocket,string directory,string request)
 				while (!response200.empty() && (response200[0] == '\r' || response200[0] == '\n')) {
     					response200.erase(0, 1);
 				}
-				send(clientsocket,response200.data(),response200.size(),0);	
+				send(clientsocket,response200.data(),response200.size(),0);
+					
+			if(request.find("Connection: close")!=string::npos)
+				close(clientsocket);	
 			}
 			else
 			{
@@ -239,6 +250,9 @@ void process_request(int clientsocket,string directory,string request)
     					response201.erase(0, 1);
 				}
 				send(clientsocket,response201.data(),response201.size(),0);
+				
+			if(request.find("Connection: close")!=string::npos)
+				close(clientsocket);	
 			}
 			else
 			{
