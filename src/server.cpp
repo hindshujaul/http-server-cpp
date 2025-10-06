@@ -217,9 +217,9 @@ void process_request(int clientsocket,string directory,string request)
 			{
 				response200="HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
 				+to_string(agent_data.length())
-				+"\r\n\r\n"
+				+"Connection: close\r\n";
+				+"\r\n"
 				+agent_data
-				+"Connection: close\r\n\r\n";
 				
 				close(clientsocket);
 				
